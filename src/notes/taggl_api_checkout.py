@@ -10,7 +10,7 @@ from src.tokens import api_token
 utc_timezone = pytz.utc
 
 # 输入日期字符串 (YYYYMMDD 格式)
-date_str = "20250223"  # 修改这里来改变日期
+date_str = "20250301"  # 修改这里来改变日期
 
 # 解析日期字符串
 try:
@@ -19,8 +19,10 @@ except ValueError:
     print("日期格式错误，请输入 YYYYMMDD 格式的日期。")
     exit()
 
+previous_date = base_date - datetime.timedelta(days=1)
+
 # 计算开始和结束时间
-start_datetime = datetime.datetime(base_date.year, base_date.month, base_date.day -1, 16, 0, 0, tzinfo=utc_timezone) #  YYYYMMDD - 1 16:00:00 UTC
+start_datetime = datetime.datetime(previous_date.year, previous_date.month, previous_date.day, 16, 0, 0, tzinfo=utc_timezone) #  YYYYMMDD - 1 16:00:00 UTC
 end_datetime = datetime.datetime(base_date.year, base_date.month, base_date.day, 15, 59, 59, tzinfo=utc_timezone)  #  YYYYMMDD 15:59:59 UTC
 
 # 转换为 ISO 8601 格式
