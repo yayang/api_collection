@@ -1,0 +1,19 @@
+# .gitignore python
+.DS_Store
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+*.virtualenv/
+*.log
+*.csv
+*.dat
+*.out
+.idea/
+*.sublime-workspace
+build/
+dist/
+src/tokens/*
+*.egg-info/
