@@ -4,13 +4,14 @@ import datetime
 import pytz
 from urllib.parse import quote
 import re
-from src.tokens import api_token
+
+from src.tokens import api_tokens
 
 # 设置时区为 UTC
 utc_timezone = pytz.utc
 
 # 输入日期字符串 (YYYYMMDD 格式)
-date_str = "20250301"  # 修改这里来改变日期
+date_str = "20250311"  # 修改这里来改变日期
 
 # 解析日期字符串
 try:
@@ -33,7 +34,7 @@ url = f"https://api.track.toggl.com/api/v9/me/time_entries?start_date={quote(sta
 
 headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Basic %s' % b64encode(f"{api_token.taggl_token}:api_token".encode("ascii")).decode("ascii")
+    'Authorization': 'Basic %s' % b64encode(f"{api_tokens.taggl_token}:api_token".encode("ascii")).decode("ascii")
 }
 
 response = requests.get(url, headers=headers)
@@ -63,10 +64,8 @@ if response.status_code == 200:
 
         # 创建排序键
         sort_key = []
-
-        is_digit_first = re.match(r"^\d", description)
-        if not is_digit_first:
-            sort_key.append((0,"0")) # 非数字开头的，优先级最高
+        if not parts[0][0].isdigit():
+            sort_key.append((0, ""))
 
         for part in parts:
             num, text = part
@@ -80,8 +79,12 @@ if response.status_code == 200:
     # 排序
     sorted_descriptions = sorted(descriptions, key=custom_sort_key)
 
+    for i in range(len(sorted_descriptions)):
+        sorted_descriptions[i] = "- " + sorted_descriptions[i]
+
     # 格式化输出字符串
     output_string = "\n".join(sorted_descriptions)  # 使用换行符连接所有描述
+    output_string = date_str + "\n" + output_string
 
     print(output_string)
 else:
