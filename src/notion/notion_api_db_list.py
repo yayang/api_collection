@@ -8,7 +8,7 @@ from src.tokens.api_tokens import NOTION_API_KEY
 DATABASE_ID = "e3907c0bf3304fbd8633285d69ce56a3"
 DATE_COLUMN = "Scheduled"
 COLUMN_A = "笔记名"
-COLUMN_B = "备注"
+COLUMN_B = "备注2"
 
 headers = {
     "Authorization": f"Bearer {NOTION_API_KEY}",

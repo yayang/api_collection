@@ -11,7 +11,7 @@ from src.tokens import api_tokens
 utc_timezone = pytz.utc
 
 # 输入日期字符串 (YYYYMMDD 格式)
-date_str = "20250311"  # 修改这里来改变日期
+date_str = "20250322"  # 修改这里来改变日期
 
 # 解析日期字符串
 try:
@@ -59,22 +59,22 @@ if response.status_code == 200:
         if not description:
             return []  # 空字符串排在最后
 
-        # 分解字符串为数字和非数字部分
-        parts = re.findall(r'(\d+)|(\D+)', description)
+        # 提取字符串中的时间
+        time_match = re.search(r'(\d{1,2})点(半|\d{1,2})?', description)
+        time_priority = 0
 
-        # 创建排序键
-        sort_key = []
-        if not parts[0][0].isdigit():
-            sort_key.append((0, ""))
-
-        for part in parts:
-            num, text = part
-            if num:
-                sort_key.append((1, int(num)))  # 数字部分，转换为整数
+        if time_match:
+            hours = int(time_match.group(1))
+            minutes_str = time_match.group(2)
+            if minutes_str == '半':
+                minutes = 30
+            elif minutes_str is not None and minutes_str != "":
+                minutes = int(minutes_str)
             else:
-                sort_key.append((2, text.lower()))  # 文本部分，转换为小写
+                minutes = 0
+            time_priority = hours * 60 + minutes
 
-        return tuple(sort_key)
+        return [time_priority, description]
 
     # 排序
     sorted_descriptions = sorted(descriptions, key=custom_sort_key)
