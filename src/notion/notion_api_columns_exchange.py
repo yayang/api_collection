@@ -1,11 +1,10 @@
 import requests
-from datetime import datetime
 
 from src.tokens.api_tokens import NOTION_API_KEY
 
 # 1. 需要访问页面授权给 token, 在页面的设置的connections中添加token名
 # 2. Database_ID, 可以通过在 DB 页面 share 中 copy link 获取
-DATABASE_ID = "e3907c0bf3304fbd8633285d69ce56a3"
+DATABASE_ID = "e3907c0bf3304fbd8633285d69ce56a3"    # 作业本
 DATE_COLUMN = "Scheduled"
 COLUMN_A = "笔记名"
 COLUMN_B = "备注2"
@@ -41,14 +40,14 @@ def update_rows(date_column, column_a, column_b):
                 }
 
                 # 发起更新请求
-                page_id = row["id"]
-                update_response = requests.patch(
-                    f"https://api.notion.com/v1/pages/{page_id}",
-                    headers=headers,
-                    json={"properties": updated_properties}
-                ).json()
-                cnt += 1
-                print(f"已更新页面 {page_id}，交换{column_a}和{column_b}, cnt {cnt}")
+                # page_id = row["id"]
+                # update_response = requests.patch(
+                #     f"https://api.notion.com/v1/pages/{page_id}",
+                #     headers=headers,
+                #     json={"properties": updated_properties}
+                # ).json()
+                # cnt += 1
+                # print(f"已更新页面 {page_id}，交换{column_a}和{column_b}, cnt {cnt}")
 
             except (KeyError, ValueError) as e:
                 print(f"Error processing row: {e}")
